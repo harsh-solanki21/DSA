@@ -1,4 +1,4 @@
-package RecursionMedium;
+package Recursion.Intermediate;
 
 public class JosephusProblem {
 

@@ -1,4 +1,4 @@
-package RecursionBasic;
+package Recursion.Basic;
 
 public class CountZeros {
 
