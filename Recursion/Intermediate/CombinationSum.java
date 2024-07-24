@@ -7,6 +7,11 @@ public class CombinationSum {
 
     // https://leetcode.com/problems/combination-sum/description/
 
+    // The Time Complexity of generating all subsets is O(2^n).
+    // Each subset generation and checking if it sums up to the target takes O(n) time in the worst case.
+    // Therefore, the overall time complexity of the given code is O(2^n * n).
+
+
     // Unique Combination Sum
     static List<List<Integer>> uniqueCombinationSum(int[] candidates, int target) {
         List<List<Integer>> ans = new ArrayList<>();
