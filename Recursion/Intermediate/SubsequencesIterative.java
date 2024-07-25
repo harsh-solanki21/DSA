@@ -5,61 +5,52 @@ import java.util.List;
 
 public class SubsequencesIterative {
 
+    // Subset / Subsequence
     // Power Set: Print all the possible subsequences of the String
 
-    // Total no. of subsets we will have is 2^n
-    // So, the Time Complexity = O(n * 2^n)
+    // Total no. of subsets will be 2^n
+    // Time Complexity = O(n * 2^n)
     // Space complexity = O(n * 2^n)   i.e. 2^n is total subsets and n is space taken by each subset
+
     static List<List<Integer>> subsequence(int[] nums) {
-        List<List<Integer>> outer = new ArrayList<>();
-        outer.add(new ArrayList<>());
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.add(new ArrayList<>());
         for (int i : nums) {
-            int n = outer.size();
-            for (int j = 0; j < n; j++) {
-                List<Integer> internal = new ArrayList<>(outer.get(j));
-                internal.add(i);
-                outer.add(internal);
+            int len = ans.size();
+            for (int j = 0; j < len; j++) {
+                List<Integer> list = new ArrayList<>(ans.get(j));
+                list.add(i);
+                ans.add(list);
             }
         }
-        return outer;
+        return ans;
     }
 
 
-    // Other Approach
     // Time Complexity = O(n * 2^n)
-    // Space complexity = O(1)
-    static ArrayList<String> AllPossibleStrings(String s) {
+    // Space complexity = O(n * 2^n)
+    static ArrayList<String> allPossibleStrings(String s) {
         ArrayList<String> ans = new ArrayList<>();
         for (int i = 0; i < (1 << s.length()); i++) {
-            String sub = "";
+            StringBuilder sub = new StringBuilder();
             for (int j = 0; j < s.length(); j++) {
-                //check if the ith bit is set or not
                 if ((i & (1 << j)) != 0) {
-                    sub += s.charAt(j);
+                    sub.append(s.charAt(j));
                 }
             }
-            if (sub.length() > 0) {
-                ans.add(sub);
+            if (!sub.isEmpty()) {
+                ans.add(sub.toString());
             }
         }
-//        Collections.sort(ans);
         return ans;
     }
 
     public static void main(String[] args) {
-        // for first approach
-//        int[] nums = {1, 2, 3};
-//        List<List<Integer>> ans = subsequence(nums);
-//        for (List<Integer> list : ans) {
-//            System.out.println(list);
-//        }
+        int[] nums = {1, 2, 3};
+        System.out.println(subsequence(nums));
 
-        // for the other approach
-        String s = "abc";
-        ArrayList<String> ans = AllPossibleStrings(s);
-        for (String it : ans) {
-            System.out.print(it + " ");
-        }
+        String str = "abc";
+        System.out.println(allPossibleStrings(str));
     }
 
 }
