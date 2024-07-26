@@ -3,7 +3,17 @@ package Backtracking;
 public class NQueensBBA {
 
     // Branch and Bound Algorithm
-    static void nQueens(boolean[][] board, int row, boolean[] cols, boolean[] diag, boolean[] revDiag, String ans) {
+    static void solveNQueens(int n) {
+        boolean[][] board = new boolean[n][n];
+
+        boolean[] cols = new boolean[n];
+        boolean[] diag = new boolean[2 * n - 1];
+        boolean[] revDiag = new boolean[2 * n - 1];
+
+        nQueens(board, 0, cols, diag, revDiag, "");
+    }
+
+    private static void nQueens(boolean[][] board, int row, boolean[] cols, boolean[] diag, boolean[] revDiag, String ans) {
         if (row == board.length) {
             System.out.println(ans);
             return;
@@ -28,13 +38,7 @@ public class NQueensBBA {
 
     public static void main(String[] args) {
         int n = 4;
-        boolean[][] board = new boolean[n][n];
-
-        boolean[] cols = new boolean[n];
-        boolean[] diag = new boolean[2 * n - 1];
-        boolean[] revDiag = new boolean[2 * n - 1];
-
-        nQueens(board, 0, cols, diag, revDiag, "");
+        solveNQueens(n);
     }
 
 }
