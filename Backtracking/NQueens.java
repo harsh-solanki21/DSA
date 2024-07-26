@@ -1,171 +1,96 @@
 package Backtracking;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NQueens {
 
-    // The N Queen is the problem of placing N chess queens on an N×N chessboard so that no two queens attack each other.
-    // Queens can attack vertically, horizontally and diagonally.
+    // https://leetcode.com/problems/n-queens/description/
 
-    // displays coordinates where we can put queens on the board
-    static void printNQueens(int[][] chess, String ans, int row) {
-        if (row == chess.length) {
-            System.out.println(ans);
-            return;
-        }
-        for (int col = 0; col < chess.length; col++) {
-            if (isItSafeForQueen(chess, row, col)) {
-                chess[row][col] = 1;
-                printNQueens(chess, ans + row + "-" + col + ", ", row + 1);
-                chess[row][col] = 0;
-            }
-        }
-    }
+    // Time complexity: O(N! * N)
+    // For the first row, we have N choices.
+    // For the second row, we have at most N-1 choices.
+    // For the third row, we have at most N-2 choices, and so on.
+    // This leads to N * (N-1) * (N-2) * ... * 1 = N! possibilities in the worst case.
+    // The isSafe() function takes O(N) time in the worst case, as it may need to check up to N-1 squares in a column or diagonal.
+    // Therefore, the overall time complexity is O(N! * N) = O(N!), as N! dominates N for large values of N.
 
-    private static boolean isItSafeForQueen(int[][] chess, int row, int col) {
-        for (int i = row - 1, j = col; i >= 0; i--) {
-            if (chess[i][j] == 1) {
-                return false;
-            }
-        }
+    // Space complexity: O(N! * N)
+    // The board: O(N^2) for the N x N char array.
+    // The recursion stack: O(N) in the worst case, as the maximum depth of recursion is N.
+    // The ans list: O(N! * N) in the worst case, as there could be up to N! solutions, each requiring N strings of length N.
+    // The dominant factor here is the ans list, so the overall space complexity is O(N! * N).
 
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-            if (chess[i][j] == 1) {
-                return false;
-            }
-        }
-
-        for (int i = row - 1, j = col + 1; i >= 0 && j < chess.length; i--, j++) {
-            if (chess[i][j] == 1) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
-    // displays the chess board placed with queens
-    // also displays no. of ways possible to place queens on the board
-    // TC - O(n^3 * n!)
-    static int queens(boolean[][] board, int row) {
-        if (row == board.length) {
-            display(board);
-            System.out.println();
-            return 1;
-        }
-
-        int count = 0;
-
-        // placing the queen and checking for every row and col
-        for (int col = 0; col < board.length; col++) {
-            // place the queen if it is safe
-            if (isSafe(board, row, col)) {
-                board[row][col] = true;
-                count += queens(board, row + 1);
-                board[row][col] = false;
-            }
-        }
-
-        return count;
-    }
-
-    private static boolean isSafe(boolean[][] board, int row, int col) {
-        // check vertical row
-        for (int i = 0; i < row; i++) {
-            if (board[i][col]) {
-                return false;
-            }
-        }
-
-        // diagonal left
-        int maxLeft = Math.min(row, col);
-        for (int i = 1; i <= maxLeft; i++) {
-            if (board[row - i][col - i]) {
-                return false;
-            }
-        }
-
-        // diagonal right
-        int maxRight = Math.min(row, board.length - col - 1);
-        for (int i = 1; i <= maxRight; i++) {
-            if (board[row - i][col + i]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static void display(boolean[][] board) {
-        for (boolean[] row : board) {
-            for (boolean element : row) {
-                if (element) {
-                    System.out.print("Q ");
-                } else {
-                    System.out.print("X ");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-
-    // Leetcode solution with List<List<String>> return type
     static List<List<String>> solveNQueens(int n) {
+        List<List<String>> ans = new ArrayList<>();
         char[][] board = new char[n][n];
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(board[i], '.');
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                board[i][j] = '.';
+            }
         }
-
-        int[] rowArr = new int[n];
-        int[] downDigArr = new int[2 * n - 1];
-        int[] upDigArr = new int[2 * n - 1];
-        List<List<String>> list = new ArrayList<>();
-        solve(board, 0, n, list, rowArr, upDigArr, downDigArr);
-
-        return list;
+        queens(board, ans, 0);
+        return ans;
     }
 
-    private static void solve(char[][] board, int col, int n, List<List<String>> list, int[] rowArr, int[] upDigArr, int[] downDigArr) {
-        if (col == n) {
-            List<String> ds = new ArrayList<>();
-            for (int i = 0; i < n; i++) {
-                ds.add(new String(board[i]));
-            }
-            list.add(new ArrayList<>(ds));
+    private static void queens(char[][] board, List<List<String>> ans, int row) {
+        if (row == board.length) {
+            ans.add(construct(board));
             return;
         }
 
-        for (int row = 0; row < n; row++) {
-            if (rowArr[row] == 0 && downDigArr[row + col] == 0 && upDigArr[n - 1 + col - row] == 0) {
+        for (int col = 0; col < board[0].length; col++) {
+            if (isSafe(board, row, col)) {
                 board[row][col] = 'Q';
-                rowArr[row] = 1;
-                downDigArr[row + col] = 1;
-                upDigArr[n - 1 + col - row] = 1;
-                solve(board, col + 1, n, list, rowArr, upDigArr, downDigArr);
+                queens(board, ans, row + 1);
                 board[row][col] = '.';
-                rowArr[row] = 0;
-                downDigArr[row + col] = 0;
-                upDigArr[n - 1 + col - row] = 0;
             }
         }
+    }
+
+    private static boolean isSafe(char[][] board, int row, int col) {
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+
+        for (int i = row - 1, j = col + 1; i >= 0 && j < board[0].length; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+
+        for (int i = row - 1; i >= 0; i--) {
+            if (board[i][col] == 'Q') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static List<String> construct(char[][] board) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < board.length; i++) {
+            String row = new String(board[i]);
+            list.add(row);
+        }
+        return list;
     }
 
 
     public static void main(String[] args) {
-        int n = 4;  // n = 2 and 3 will give blank output because there is no answer for those inputs
-        int[][] chess = new int[n][n];
-//        printNQueens(chess, "", 0);
-
-        boolean[][] board = new boolean[n][n];
-//        queens(board, 0);
-//        System.out.println(queens(board, 0));  // total no. of ways possible to put queen
-
+        int n = 4;
         List<List<String>> ans = solveNQueens(n);
-        System.out.println(ans);
+        for (int i = 0; i < ans.size(); i++) {
+            for (int j = 0; j < ans.get(i).size(); j++) {
+                System.out.println(ans.get(i).get(j));
+            }
+            System.out.println();
+        }
+
+        System.out.println("Total solutions: " + ans.size());
     }
 
 }
