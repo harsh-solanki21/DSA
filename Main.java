@@ -8,74 +8,32 @@ public class Main {
 // Subset: [1,3,2] - is not continuous and does not maintain relative order of elements, subsets: 2^n
 
 
-    static List<List<String>> solveNQueens(int n) {
-        List<List<String>> ans = new ArrayList<>();
-        boolean[][] board = new boolean[n][n];
-        solve(0, board, ans);
+    static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+        helper(candidates, target, ans, new ArrayList<>(), 0);
         return ans;
     }
 
-    private static void solve(int row, boolean[][] board, List<List<String>> ans) {
-        if (row == board.length) {
-            display(board, ans);
+    private static void helper(int[] candidates, int target, List<List<Integer>> ans, List<Integer> list, int index) {
+        if (target < 0 || index >= candidates.length) {
+            return;
+        }
+        if (target == 0) {
+            ans.add(list);
             return;
         }
 
-        for (int col = 0; col < board[0].length; col++) {
-            if (isSafe(row, col, board)) {
-                board[row][col] = true;
-                solve(row + 1, board, ans);
-                board[row][col] = false;
-            }
+        for (int i = 0; i < candidates.length; i++) {
+            list.add(candidates[i]);
+            helper(candidates, target - candidates[i], ans, list, index + 1);
         }
-    }
-
-    private static boolean isSafe(int row, int col, boolean[][] board) {
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-            if (board[i][j]) {
-                return true;
-            }
-        }
-
-        for (int i = row + 1, j = col + 1; i < board.length && j < board[0].length; i++, j++) {
-            if (board[i][j]) {
-                return true;
-            }
-        }
-
-        for (int i = row - 1; i >= 0; i--) {
-            if (board[i][col]) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static void display(boolean[][] board, List<List<String>> ans) {
-        for (int i = 0; i < board.length; i++) {
-            List<String> list = new ArrayList<>();
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j]) {
-                    list.add("Q");
-                } else {
-                    list.add(".");
-                }
-            }
-            ans.add(list);
-        }
-
-        for (List<String> i : ans) {
-            System.out.println(i);
-        }
-        System.out.println();
     }
 
 
     public static void main(String[] args) {
-        int n = 4;
-        System.out.println(solveNQueens(n));
+        int[] candidates = {2, 3, 5};
+        int target = 8;
+        System.out.println(combinationSum(candidates, target));
     }
-
 
 }
