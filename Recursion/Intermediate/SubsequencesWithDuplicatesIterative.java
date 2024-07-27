@@ -15,24 +15,29 @@ public class SubsequencesWithDuplicatesIterative {
     static List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
 
-        List<List<Integer>> result = new ArrayList<>();
-        result.add(new ArrayList<>());  // empty set
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.add(new ArrayList<>());
 
-        int cachedSize = 0, startIdx = 0;
+        int size = 0, start = 0;
         for (int i = 0; i < nums.length; ++i) {
-            List<List<Integer>> newResult = new ArrayList<>();  // used for new lists
-            // set startIdx first before we update cachedSize
-            startIdx = (i > 0 && nums[i - 1] == nums[i]) ? cachedSize : 0; // if duplicate occurs
-            cachedSize = result.size(); // cache the size for startIdx in the next round
-            for (int j = startIdx; j < result.size(); ++j) {
-                List<Integer> L = result.get(j);
-                L = new ArrayList<>(L);  // copy
-                L.add(nums[i]);
-                newResult.add(L);
+            List<List<Integer>> result = new ArrayList<>();
+            if (i > 0 && nums[i - 1] == nums[i]) {
+                start = size;
+            } else {
+                start = 0;
             }
-            result.addAll(newResult);  // concatenate
+            size = ans.size();
+
+            for (int j = start; j < ans.size(); j++) {
+                List<Integer> list = new ArrayList<>(ans.get(j));
+                list.add(nums[i]);
+                result.add(list);
+            }
+
+            ans.addAll(result);
         }
-        return result;
+
+        return ans;
     }
 
     public static void main(String[] args) {
