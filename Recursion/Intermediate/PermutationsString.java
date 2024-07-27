@@ -3,7 +3,7 @@ package Recursion.Intermediate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Permutations {
+public class PermutationsString {
 
     // No. of permutations = str.length()!
     // TC - O(n * n!), SC - O(n)
