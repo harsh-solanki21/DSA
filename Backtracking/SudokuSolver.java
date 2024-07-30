@@ -1,7 +1,5 @@
 package Backtracking;
 
-import java.util.Arrays;
-
 public class SudokuSolver {
 
     // https://leetcode.com/problems/sudoku-solver/description/
