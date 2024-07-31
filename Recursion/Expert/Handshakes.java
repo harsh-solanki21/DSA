@@ -2,14 +2,12 @@ package Recursion.Expert;
 
 public class Handshakes {
 
-//    We have N persons sitting on a round table. Any person can do a handshake with any other person.
-//
-//            1
-//       2         3
-//            4
-//
-//    Handshake with 2-3 and 1-4 will cause cross.
-//    In how many ways these N people can make handshakes so that no two handshakes cross each other. N would be even.
+
+//    You are given an even number of people n that stand around a circle and each person shakes hands with someone else,
+//    so that there are n / 2 handshakes total.
+
+//    Return the number of ways these handshakes could occur such that none of the handshakes cross.
+//    Since this number could be very big, return the answer mod 10^9 + 7
 
     static int count(int n) {
         if (n == 0) {
@@ -25,7 +23,8 @@ public class Handshakes {
     }
 
     public static void main(String[] args) {
-        System.out.println(count(4));
+        int n = 6;
+        System.out.println(count(n));
     }
 
 }
