@@ -1,29 +1,31 @@
 package Recursion.Expert;
 
-import java.util.TreeSet;
+import java.util.HashSet;
 
 public class DistinctSubsequences {
 
-    // Print unique subsequences
-    // This will find duplicate subsequences also, but the TreeSet will ignore duplicate values.
-    // So, we will get unique values.
-    static void uniqueSubsequences(TreeSet<String> st, String ans, String s) {
-        if (s.isEmpty()) {
-            st.add(ans);
+    // TC - O(2^n)
+    // SC - O(n)
+
+    static HashSet<String> uniqueSubsequence(String s) {
+        HashSet<String> ans = new HashSet<>();
+        subsequences(s, 0, "", ans);
+        return ans;
+    }
+
+    private static void subsequences(String s, int index, String current, HashSet<String> result) {
+        if (index == s.length()) {
+            result.add(current);
             return;
         }
-        char ch = s.charAt(0);
-        uniqueSubsequences(st, ans + ch, s.substring(1));
-        uniqueSubsequences(st, ans, s.substring(1));
+
+        subsequences(s, index + 1, current + s.charAt(index), result);
+        subsequences(s, index + 1, current, result);
     }
 
     public static void main(String[] args) {
-        String s = "aaa";
-        TreeSet<String> st = new TreeSet<>();
-        uniqueSubsequences(st, "", s);
-        for (String str : st) {
-            System.out.println(str);
-        }
+        String str = "abcc";
+        System.out.println(uniqueSubsequence(str));
     }
 
 }
