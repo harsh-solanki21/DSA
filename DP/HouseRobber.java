@@ -2,60 +2,48 @@ package DP;
 
 public class HouseRobber {
 
-    // https://leetcode.com/problems/house-robber/submissions/
-
-    static int maximumSumOfNonAdjacentElements(int[] nums) {
-//        return helper(nums, nums.length - 1);
-
-//        int[] dp = new int[nums.length + 1];
-//        return helperMemoize(nums, nums.length - 1, dp);
-
-//        return helperTabulation(nums);
-
-        return helperSpaceOptimize(nums);
-    }
+    // https://leetcode.com/problems/house-robber/description/
 
     // Recursive
     // TC - O(2^n), SC - O(n)
-    private static int helper(int[] nums, int i) {
-        if (i < 0) {
-            return 0;
-        }
-        if (i == 0) {
+    private static int rob(int[] nums, int index) {
+        if (index == 0) {
             return nums[0];
         }
+        if (index < 0) {
+            return 0;
+        }
 
-        int incl = helper(nums, i - 2) + nums[i];
-        int excl = helper(nums, i - 1);
-
-        return Math.max(incl, excl);
+        int pick = nums[index] + rob(nums, index - 2);
+        int notPick = rob(nums, index - 1);
+        return Math.max(pick, notPick);
     }
 
 
-    // Memoized
+    // Memoization
     // TC - O(n), SC - O(n) + O(n)
-    private static int helperMemoize(int[] nums, int i, int[] dp) {
-        if (i < 0) {
-            return 0;
-        }
-        if (i == 0) {
+    private static int robMemoize(int[] nums, int index, int[] dp) {
+        if (index == 0) {
             return nums[0];
         }
-        if (dp[i] != 0) {
-            return dp[i];
+        if (index < 0) {
+            return 0;
+        }
+        if (dp[index] > 0) {
+            return dp[index];
         }
 
-        int incl = helper(nums, i - 2) + nums[i];
-        int excl = helper(nums, i - 1);
+        int pick = nums[index] + robMemoize(nums, index - 2, dp);
+        int notPick = robMemoize(nums, index - 1, dp);
 
-        dp[i] = Math.max(incl, excl);
-        return dp[i];
+        dp[index] = Math.max(pick, notPick);
+        return dp[index];
     }
 
 
     // Tabulation
     // TC - O(n), SC - O(n)
-    private static int helperTabulation(int[] nums) {
+    private static int robTabulation(int[] nums) {
         if (nums.length == 1) {
             return nums[0];
         }
@@ -65,9 +53,9 @@ public class HouseRobber {
         dp[1] = Math.max(nums[0], nums[1]);
 
         for (int i = 2; i < nums.length; i++) {
-            int incl = dp[i - 2] + nums[i];
-            int excl = dp[i - 1];
-            dp[i] = Math.max(incl, excl);
+            int pick = nums[i] + dp[i - 2];
+            int notPick = dp[i - 1];
+            dp[i] = Math.max(pick, notPick);
         }
 
         return dp[nums.length - 1];
@@ -76,7 +64,7 @@ public class HouseRobber {
 
     // Space Optimization
     // TC - O(n), SC - O(1)
-    private static int helperSpaceOptimize(int[] nums) {
+    private static int robSpaceOptimize(int[] nums) {
         if (nums.length == 1) {
             return nums[0];
         }
@@ -85,10 +73,10 @@ public class HouseRobber {
         int prev1 = Math.max(nums[0], nums[1]);
 
         for (int i = 2; i < nums.length; i++) {
-            int incl = prev2 + nums[i];
-            int excl = prev1;
+            int pick = nums[i] + prev2;
+            int notPick = prev1;
 
-            int ans = Math.max(incl, excl);
+            int ans = Math.max(pick, notPick);
             prev2 = prev1;
             prev1 = ans;
         }
@@ -98,8 +86,12 @@ public class HouseRobber {
 
 
     public static void main(String[] args) {
-        int[] nums = {9, 9, 8, 2};
-        System.out.println(maximumSumOfNonAdjacentElements(nums));
+        int[] nums = {2, 7, 9, 3, 1};
+
+        System.out.println(rob(nums, nums.length - 1));
+        System.out.println(robMemoize(nums, nums.length - 1, new int[nums.length]));
+        System.out.println(robTabulation(nums));
+        System.out.println(robSpaceOptimize(nums));
     }
 
 }
