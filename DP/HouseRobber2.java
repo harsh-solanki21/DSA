@@ -2,7 +2,7 @@ package DP;
 
 public class HouseRobber2 {
 
-    // https://leetcode.com/problems/house-robber-ii/
+    // https://leetcode.com/problems/house-robber-ii/description/
 
     // TC - O(n), SC - O(n) + O(n)
     private static int houseRobber(int[] nums) {
@@ -16,15 +16,15 @@ public class HouseRobber2 {
             if (i != nums.length - 1) {
                 first[i] = nums[i];
             }
-            if (i != 0) {
+            if (i > 0) {
                 second[i - 1] = nums[i];
             }
         }
 
-        return Math.max(solve(first), solve(second));
+        return Math.max(rob(first), rob(second));
     }
 
-    private static int solve(int[] nums) {
+    private static int rob(int[] nums) {
         if (nums.length == 1) {
             return nums[0];
         }
@@ -32,10 +32,10 @@ public class HouseRobber2 {
         int prev2 = nums[0];
         int prev1 = Math.max(nums[0], nums[1]);
         for (int i = 2; i < nums.length; i++) {
-            int incl = prev2 + nums[i];
-            int excl = prev1;
+            int pick = nums[i] + prev2;
+            int notPick = prev1;
 
-            int ans = Math.max(incl, excl);
+            int ans = Math.max(pick, notPick);
             prev2 = prev1;
             prev1 = ans;
         }
@@ -45,7 +45,7 @@ public class HouseRobber2 {
 
 
     public static void main(String[] args) {
-        int[] nums = {9, 8, 7};
+        int[] nums = {1, 2, 3, 1};
         System.out.println(houseRobber(nums));
     }
 
