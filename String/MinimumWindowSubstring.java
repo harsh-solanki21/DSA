@@ -4,10 +4,13 @@ import java.util.HashMap;
 
 public class MinimumWindowSubstring {
 
+    // https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+
     // Approach 1
     static String minWindow(String S, String T) {
-        if (S == null || S.isEmpty() || T == null || T.isEmpty())
+        if (S == null || S.isEmpty() || T == null || T.isEmpty()){
             return "";
+        }
 
         int i = 0, j = 0;
         int[] Tmap = new int[256];
@@ -18,7 +21,7 @@ public class MinimumWindowSubstring {
 
         int found = 0;
         int length = Integer.MAX_VALUE;
-        String res = "";
+        String ans = "";
         while (j < S.length()) {
             if (found < T.length()) {
                 if (Tmap[S.charAt(j)] > 0) {
@@ -32,7 +35,7 @@ public class MinimumWindowSubstring {
             while (found == T.length()) {
                 if (j - i < length) {
                     length = j - i;
-                    res = S.substring(i, j);
+                    ans = S.substring(i, j);
                 }
                 if (Tmap[S.charAt(i)] > 0) {
                     Smap[S.charAt(i)]--;
@@ -44,7 +47,7 @@ public class MinimumWindowSubstring {
             }
         }
 
-        return res;
+        return ans;
     }
 
 
@@ -102,7 +105,8 @@ public class MinimumWindowSubstring {
 
 
     public static void main(String[] args) {
-        String s = "ADOBECODEBANC", t = "ABC";
+//        String s = "ADOBECODEBANC", t = "ABC";
+        String s = "zoomlazapzo", t = "oza";
         System.out.println(minWindow(s, t));
         System.out.println(minWindow2(s, t));
     }
