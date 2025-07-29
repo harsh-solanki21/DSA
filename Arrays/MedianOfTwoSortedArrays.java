@@ -1,6 +1,6 @@
 package Arrays;
 
-public class FindMedianInSortedArrays {
+public class MedianOfTwoSortedArrays {
 
     static double findMedian(int[] nums1, int[] nums2) {
         int[] ans = new int[nums1.length + nums2.length];
