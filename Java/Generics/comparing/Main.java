@@ -1,4 +1,4 @@
-package Generics.comparing;
+package Java.Generics.comparing;
 
 import java.util.Arrays;
 

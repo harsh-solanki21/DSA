@@ -1,4 +1,4 @@
-package Generics.comparing;
+package Java.Generics.comparing;
 
 public class Student implements Comparable<Student>{
     int rollno;

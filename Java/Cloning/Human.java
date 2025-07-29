@@ -1,4 +1,4 @@
-package Cloning;
+package Java.Cloning;
 
 public class Human implements Cloneable{
     int age;

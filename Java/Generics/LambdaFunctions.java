@@ -1,4 +1,4 @@
-package Generics;
+package Java.Generics;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

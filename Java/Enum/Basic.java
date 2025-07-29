@@ -1,4 +1,4 @@
-package Enum;
+package Java.Enum;
 
 public class Basic {
     enum Week implements A{

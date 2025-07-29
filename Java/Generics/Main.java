@@ -1,4 +1,4 @@
-package Generics;
+package Java.Generics;
 
 public class Main implements GenericInterface<Integer>{
 
